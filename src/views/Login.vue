@@ -1,6 +1,5 @@
 <template>
     <div class="login">
-        <h1>Welcome to the Ticketing System!</h1>
         <div class="login-card">
             <LoginCard/>
         </div>

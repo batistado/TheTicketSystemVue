@@ -1,52 +1,73 @@
 <template>
   <div class="table">
-        <el-table
-        :data="filteredData"
+    <el-card class="box-card">
+        <div slot="header" class="table-header">
+            <h2>Ticketetting information</h2>
+            <div>
+                <el-input
+                        v-model="search"
+                        placeholder="Type to search"
+                        clearable/>
+            </div>
+        </div>
+         <el-table
+        :data="tableData"
+        stripe
+        border
+        @sort-change="sortChange"
         style="width: 100%">
             <el-table-column
                 label="Ticket Number"
-                prop="ticketId">
+                prop="ticketId"
+                sortable="custom"
+                >
             </el-table-column>
             <el-table-column
                 label="Requestor"
+                sortable="custom"
                 prop="requestor">
             </el-table-column>
             <el-table-column
                 label="IT Owner"
+                sortable="custom"
                 prop="itOwner">
             </el-table-column>
             <el-table-column
                 label="Filed Against"
+                sortable="custom"
                 prop="filedAgainst">
             </el-table-column>
-            
              <el-table-column
                 label="Ticket Type"
+                sortable="custom"
                 prop="ticketType">
             </el-table-column>
             <el-table-column
                 label="Severity"
+                sortable="custom"
                 prop="severity">
             </el-table-column>
             <el-table-column
                 label="Priority"
+                sortable="custom"
                 prop="priority">
             </el-table-column>
             <el-table-column
                 label="Satisfaction"
+                sortable="custom"
                 prop="satisfaction">
             </el-table-column>
-            <el-table-column
-                align="right">
-                <template slot="header" slot-scope="scope">
-                    <el-input
-                    v-model="search"
-                    size="mini"
-                    placeholder="Type to search"
-                    clearable/>
-                </template>
-            </el-table-column>
         </el-table>
+
+        <div class="pagination">
+            <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="total"
+                @current-change="pageChanged">
+            </el-pagination>
+        </div>
+    </el-card>
   </div>
 </template>
 
@@ -60,26 +81,27 @@ export default {
           data: [],
           tableData: [],
           search: '',
-          orderBy: '',
+          orderBy: 'ticket',
           pageSize: 10,
           pageNo: 0,
+          total: 0,
           isAscending: true,
       }
   },
+  watch: {
+      search: function() {
+          this.loadData();
+      }
+  },
   computed: {
-      filteredData() {
-          if (this.search === undefined || this.search.length == 0 || this.search === ''){
-              return this.tableData;
-          }
-
-          return this.tableData.filter(o => {
-              for (let p in o){
-                  if (o[p].toLowerCase().includes(this.search.toLowerCase()))
-                    return true;
-              }
-
-              return false;
-          });
+      requestBody() {
+          return {
+            searchBy: this.search,
+            orderBy: this.orderBy,
+            pageSize: this.pageSize,
+            pageNo: this.pageNo,
+            isAscending: this.isAscending,    
+          };
       }
   },
   methods: {
@@ -98,20 +120,45 @@ export default {
           });
       },
       
-      loadData() {
-          const req = {
-            searchBy: this.search,
-            orderBy: this.orderBy,
-            pageSize: this.pageSize,
-            pageNo: this.pageNo,
-            isAscending: this.isAscending,    
-          };
+      sortChange({column, order, prop}) {
+            this.isAscending = order === "ascending" ? true : false;
 
-          http.post('fetchData', req).then(response => {
+            if (prop === "ticketId"){
+                this.orderBy = "ticket";
+            } else if (prop === "requestor") {
+                this.orderBy = "Requestor";
+            } else if (prop === "itOwner"){
+                this.orderBy = "ITOwner";
+            } else if (prop === "filedAgainst") {
+                this.orderBy = "FiledAgainst";
+            } else if (prop === "ticketType") {
+                this.orderBy = "TicketType";
+            } else if (prop === "severity"){
+                this.orderBy = "Severity";
+            } else if (prop === "priority") {
+                this.orderBy = "Priority";
+            } else {
+                this.orderBy = "Satisfaction";
+            }
+
+            this.loadData();
+      },
+
+      pageChanged(newPageNo) {
+          this.pageNo = newPageNo - 1;
+          this.loadData();
+      },
+
+      loadData() {
+          http.post('fetchData', this.requestBody).then(response => {
                 this.data = response.data.data;
+                this.total = response.data.totalCount;
                 this.cleanData();
             }).catch(e => {
-                console.log(e);
+                this.$message({
+                    message: e,
+                    type: 'error',
+                });
             });
       },
   },
@@ -123,4 +170,13 @@ export default {
 
 
 <style scoped>
+.pagination {
+    margin: auto;
+    width: 45%;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+}
 </style>

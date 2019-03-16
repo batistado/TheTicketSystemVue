@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import userData from '@/assets/data/User.json'
+import { http } from '../middleware/http';
 
 export default {
   name: 'login-card',
@@ -33,28 +33,44 @@ export default {
       return {
           username: '',
           password: '',
-          userData: userData,
+      }
+  },
+  computed: {
+      requestBody() {
+          return {
+              username: this.username,
+              password: this.password,
+          }
       }
   },
   methods: {
       login() {
-          const userIndex = this.userData.findIndex(o => o.id === this.username);
+          http.post('/login', this.requestBody).then(response => {
+                if (response.data.success) {
+                    window.sessionStorage.setItem("tsIsLoggedIn", "Y");
+                    this.$store.commit('signIn', this.username);
+                    this.$router.push({ name: 'home' });
+                }
 
-          if (userIndex ===  -1 || this.userData[userIndex].password !== this.password){
-              alert('Invalid username or password!');
-              this.reset();
-              return;
-          }
+                this.$message({
+                    message: 'Login successful!',
+                    type: 'success',
+                });
 
-          alert('Log in successful!');
-          this.reset();
+                this.reset();
+            }).catch(e => {
+                this.$message({
+                    message: e,
+                    type: 'error',
+                });
+            });
       },
 
       reset() {
           this.username = '';
           this.password = '';
       }
-  }
+  },
 }
 </script>
 
