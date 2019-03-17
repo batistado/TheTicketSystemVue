@@ -1,5 +1,11 @@
 # TicketingSystem
 
+## About
+This is the frontend for the project TheTicketSystem. You can find the backend project below:
+```
+https://github.com/batistado/TheTicketSystemNode
+```
+
 ## Project setup
 ```
 yarn install
