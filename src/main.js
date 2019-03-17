@@ -7,9 +7,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import locale from 'element-ui/lib/locale/lang/en';
 import './plugins/element.js';
-import BootstrapVue from 'bootstrap-vue'
+import BootstrapVue from 'bootstrap-vue';
+import VueChartkick from 'vue-chartkick';
+import Chart from 'chart.js';
 import { store } from './store/store';
 
+Vue.use(VueChartkick, {adapter: Chart});
 Vue.use(BootstrapVue);
 Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false

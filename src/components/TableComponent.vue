@@ -11,19 +11,19 @@
             </div>
         </div>
          <el-table
-        :data="data"
-        stripe
-        border
-        @sort-change="sortChange"
-        @row-click="rowClicked"
-        style="width: 100%">
-        <el-table-column
-                v-for="field in ticketSummaryFields"
-                :key="field"
-                :label="field"
-                :prop="ticketSummaryMapping[field]"
-                sortable="custom"
-                />
+            :data="data"
+            stripe
+            border
+            @sort-change="sortChange"
+            @row-click="rowClicked"
+            style="width: 100%">
+            <el-table-column
+                    v-for="field in ticketSummaryFields"
+                    :key="field"
+                    :label="field"
+                    :prop="ticketSummaryMapping[field]"
+                    sortable="custom"
+                    />
         </el-table>
 
         <div class="pagination">
@@ -80,9 +80,11 @@ export default {
       },
       
       sortChange({column, order, prop}) {
-            this.isAscending = order === "ascending" ? true : false;
-            this.orderBy = prop;
-            this.loadData();
+            if (prop !== null){
+                this.isAscending = order === "ascending" ? true : false;
+                this.orderBy = prop;
+                this.loadData();
+            }
       },
 
       pageChanged(newPageNo) {
@@ -102,7 +104,7 @@ export default {
             });
       },
   },
-  created() {
+  mounted() {
       this.loadData();
   }
 }

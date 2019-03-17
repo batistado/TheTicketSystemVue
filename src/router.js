@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
+import Charts from './views/Charts.vue'
 import { store } from './store/store';
 
 Vue.use(Router);
@@ -17,6 +18,11 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/charts',
+      name: 'charts',
+      component: Charts
     }
   ]
 });

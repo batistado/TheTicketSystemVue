@@ -3,7 +3,10 @@
     <b-navbar toggleable="lg" type="dark" variant="danger">
     <b-navbar-brand href="#">The Ticketing System</b-navbar-brand>
 
-    <b-navbar-toggle target="nav_collapse" />
+    <b-navbar-nav v-if="!!this.$store.getters.isAuthenticated">
+        <b-nav-item to="/">Dashboard</b-nav-item>
+        <b-nav-item to="/charts">Charts</b-nav-item>
+    </b-navbar-nav>
 
     <b-collapse is-nav id="nav_collapse" v-if="!!this.$store.getters.isAuthenticated">
 
