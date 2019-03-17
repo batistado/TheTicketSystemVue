@@ -1,8 +1,11 @@
 <template>
-  <div class="table">
+  <div class="table" v-loading="loading"
+    element-loading-text="Loading..."
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)">
     <el-card class="box-card">
         <div slot="header" class="table-header">
-            <h2>Summary</h2>
+            <h2>Tickets Information</h2>
             <div>
                 <el-input
                         v-model="search"
@@ -54,7 +57,8 @@ export default {
           total: 0,
           isAscending: true,
           ticketSummaryFields,
-          ticketSummaryMapping
+          ticketSummaryMapping,
+          loading: false,
       }
   },
   watch: {
@@ -93,14 +97,17 @@ export default {
       },
 
       loadData() {
+          this.loading = true;
           http.post('fetchAllTickets', this.requestBody).then(response => {
                 this.data = response.data.data;
                 this.total = response.data.totalCount;
+                this.loading = false;
             }).catch(e => {
                 this.$message({
                     message: e,
                     type: 'error',
                 });
+                this.loading = false;
             });
       },
   },
@@ -114,7 +121,7 @@ export default {
 <style scoped>
 .pagination {
     margin: auto;
-    width: 45%;
+    width: 50%;
 }
 
 .table-header {

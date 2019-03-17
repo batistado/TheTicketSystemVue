@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-loading="loading"
+    element-loading-text="Loading..."
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)">
       <el-card>
         <div slot="header">
             <h2>Pie Charts</h2>
@@ -37,17 +40,21 @@ export default {
   data() {
       return {
           data: [],
+          loading: false,
       }
   },
   methods: {
       loadData() {
+          this.loading = true;
           http.get('fetchChartData').then(response => {
                 this.data = response.data.data;
+                this.loading = false;
             }).catch(e => {
                 this.$message({
                     message: e,
                     type: 'error',
                 });
+                this.loading = false;
             });
       },
   },

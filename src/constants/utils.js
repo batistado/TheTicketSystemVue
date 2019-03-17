@@ -20,14 +20,24 @@ const ticketSummaryFields = ticketDetailsFields.slice(0, 8);
 
 
 const ticketSummaryMapping = {};
+const summaryMapping = {};
 
 for (let field of ticketSummaryFields){
     ticketSummaryMapping[field] = ticketDetailsMapping[field];
+}
+
+const summaryFields = ['Filed Against', 'Ticket type', 'Severity', 'Priority', 'Satisfaction',
+'Requestor Seniority'];
+
+for (let field of summaryFields){
+    summaryMapping[field] = ticketDetailsMapping[field];
 }
 
 export {
     ticketDetailsFields,
     ticketDetailsMapping,
     ticketSummaryFields,
-    ticketSummaryMapping
+    ticketSummaryMapping,
+    summaryFields,
+    summaryMapping,
 }
