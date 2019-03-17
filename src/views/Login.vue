@@ -22,6 +22,7 @@ export default {
 h1 {
     text-align: center;
 }
+
 .login-card {
   margin: auto;
   width: 30%;

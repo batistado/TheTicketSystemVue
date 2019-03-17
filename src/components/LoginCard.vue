@@ -1,5 +1,8 @@
 <template>
     <el-card>
+        <div slot="header" class="table-header">
+            <h2>User Login</h2>
+          </div>
         <div class="login-card">
             <el-row>
                 <el-input
@@ -60,7 +63,7 @@ export default {
                 this.reset();
             }).catch(e => {
                 this.$message({
-                    message: e,
+                    message: 'Invalid username or password',
                     type: 'error',
                 });
             });
