@@ -2,7 +2,7 @@
   <div class="table">
     <el-card class="box-card">
         <div slot="header" class="table-header">
-            <h2>Ticketetting information</h2>
+            <h2>Summary</h2>
             <div>
                 <el-input
                         v-model="search"
@@ -15,6 +15,7 @@
         stripe
         border
         @sort-change="sortChange"
+        @row-click="rowClicked"
         style="width: 100%">
             <el-table-column
                 label="Ticket Number"
@@ -119,6 +120,10 @@ export default {
               }
           });
       },
+
+      rowClicked(row) {
+          this.$emit('rowClicked', row.ticketId);
+      },
       
       sortChange({column, order, prop}) {
             this.isAscending = order === "ascending" ? true : false;
@@ -150,7 +155,7 @@ export default {
       },
 
       loadData() {
-          http.post('fetchData', this.requestBody).then(response => {
+          http.post('fetchAllTickets', this.requestBody).then(response => {
                 this.data = response.data.data;
                 this.total = response.data.totalCount;
                 this.cleanData();
