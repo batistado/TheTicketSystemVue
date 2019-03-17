@@ -11,53 +11,19 @@
             </div>
         </div>
          <el-table
-        :data="tableData"
+        :data="data"
         stripe
         border
         @sort-change="sortChange"
         @row-click="rowClicked"
         style="width: 100%">
-            <el-table-column
-                label="Ticket Number"
-                prop="ticketId"
+        <el-table-column
+                v-for="field in ticketSummaryFields"
+                :key="field"
+                :label="field"
+                :prop="ticketSummaryMapping[field]"
                 sortable="custom"
-                >
-            </el-table-column>
-            <el-table-column
-                label="Requestor"
-                sortable="custom"
-                prop="requestor">
-            </el-table-column>
-            <el-table-column
-                label="IT Owner"
-                sortable="custom"
-                prop="itOwner">
-            </el-table-column>
-            <el-table-column
-                label="Filed Against"
-                sortable="custom"
-                prop="filedAgainst">
-            </el-table-column>
-             <el-table-column
-                label="Ticket Type"
-                sortable="custom"
-                prop="ticketType">
-            </el-table-column>
-            <el-table-column
-                label="Severity"
-                sortable="custom"
-                prop="severity">
-            </el-table-column>
-            <el-table-column
-                label="Priority"
-                sortable="custom"
-                prop="priority">
-            </el-table-column>
-            <el-table-column
-                label="Satisfaction"
-                sortable="custom"
-                prop="satisfaction">
-            </el-table-column>
+                />
         </el-table>
 
         <div class="pagination">
@@ -74,19 +40,21 @@
 
 <script>
 import { http } from '../middleware/http';
+import { ticketSummaryFields, ticketSummaryMapping } from '../constants/utils';
 
 export default {
   name: 'TableComponent',
   data() {
       return {
           data: [],
-          tableData: [],
           search: '',
           orderBy: 'ticket',
           pageSize: 10,
           pageNo: 0,
           total: 0,
           isAscending: true,
+          ticketSummaryFields,
+          ticketSummaryMapping
       }
   },
   watch: {
@@ -106,46 +74,14 @@ export default {
       }
   },
   methods: {
-      cleanData() {
-          this.tableData = this.data.map(o => {
-              return {
-                ticketId: o.ticket,
-                requestor: o.Requestor,
-                itOwner: o.ITOwner,
-                filedAgainst: o.FiledAgainst,
-                ticketType: o.TicketType,
-                severity: o.Severity.split(' - ')[1],
-                priority: o.Priority.split(' - ')[1],
-                satisfaction: o.Satisfaction.split(' - ')[1],
-              }
-          });
-      },
-
       rowClicked(row) {
-          this.$emit('rowClicked', row.ticketId);
+          console.log(row);
+          this.$emit('rowClicked', row.ticket);
       },
       
       sortChange({column, order, prop}) {
             this.isAscending = order === "ascending" ? true : false;
-
-            if (prop === "ticketId"){
-                this.orderBy = "ticket";
-            } else if (prop === "requestor") {
-                this.orderBy = "Requestor";
-            } else if (prop === "itOwner"){
-                this.orderBy = "ITOwner";
-            } else if (prop === "filedAgainst") {
-                this.orderBy = "FiledAgainst";
-            } else if (prop === "ticketType") {
-                this.orderBy = "TicketType";
-            } else if (prop === "severity"){
-                this.orderBy = "Severity";
-            } else if (prop === "priority") {
-                this.orderBy = "Priority";
-            } else {
-                this.orderBy = "Satisfaction";
-            }
-
+            this.orderBy = prop;
             this.loadData();
       },
 
@@ -158,7 +94,6 @@ export default {
           http.post('fetchAllTickets', this.requestBody).then(response => {
                 this.data = response.data.data;
                 this.total = response.data.totalCount;
-                this.cleanData();
             }).catch(e => {
                 this.$message({
                     message: e,

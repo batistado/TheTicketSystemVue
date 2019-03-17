@@ -16,7 +16,18 @@ const ticketDetailsMapping = {
     'Ticket Creation Date': 'Ticket Creation Date',
 }
 
+const ticketSummaryFields = ticketDetailsFields.slice(0, 8);
+
+
+const ticketSummaryMapping = {};
+
+for (let field of ticketSummaryFields){
+    ticketSummaryMapping[field] = ticketDetailsMapping[field];
+}
+
 export {
     ticketDetailsFields,
     ticketDetailsMapping,
+    ticketSummaryFields,
+    ticketSummaryMapping
 }
