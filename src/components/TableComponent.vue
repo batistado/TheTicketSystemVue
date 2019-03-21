@@ -24,6 +24,7 @@
                     v-for="field in ticketSummaryFields"
                     :key="field"
                     :label="field"
+                    :width="ticketSummaryWidths[field]"
                     :prop="ticketSummaryMapping[field]"
                     sortable="custom"
                     />
@@ -43,7 +44,7 @@
 
 <script>
 import { http } from '../middleware/http';
-import { ticketSummaryFields, ticketSummaryMapping } from '../constants/utils';
+import { ticketSummaryFields, ticketSummaryMapping, ticketSummaryWidths } from '../constants/utils';
 
 export default {
   name: 'TableComponent',
@@ -58,6 +59,7 @@ export default {
           isAscending: true,
           ticketSummaryFields,
           ticketSummaryMapping,
+          ticketSummaryWidths,
           loading: false,
       }
   },

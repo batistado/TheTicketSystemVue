@@ -7,7 +7,7 @@
     >
     <TicketDetails :ticketId="ticketId"/>
     <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="onClose">Close</el-button>
+        <el-button type="success" @click="onClose">Close</el-button>
     </span>
     </el-dialog>
   </div>
