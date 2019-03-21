@@ -2,7 +2,7 @@
     <el-card>
         <div slot="header" class="table-header">
             <h2>User Login</h2>
-          </div>
+        </div>
         <div class="login-card">
             <el-row>
                 <el-input
@@ -20,7 +20,7 @@
             </el-row>
             <div class="login-btn">
                 <el-row>
-                    <el-button type="primary" round @click="login">Login</el-button>
+                    <el-button round @click="login" type="success">Login</el-button>
                 </el-row>
             </div>
         </div>
@@ -62,10 +62,7 @@ export default {
 
                 this.reset();
             }).catch(e => {
-                this.$message({
-                    message: 'Invalid username or password',
-                    type: 'error',
-                });
+                this.reset();
             });
       },
 
@@ -77,11 +74,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .login-card > * {
     margin-bottom: 5px;
 }
 .login-btn {
     float: right;
+}
+
+.el-card__header {
+    background-color: #CB444A;
+}
+
+h2 {
+    color: white;
 }
 </style>

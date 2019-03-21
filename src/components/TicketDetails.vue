@@ -43,10 +43,7 @@ export default {
           http.get('fetchTicketDetails', {params: this.queryParams}).then(response => {
                 this.data = response.data.data;
             }).catch(e => {
-                this.$message({
-                    message: e,
-                    type: 'error',
-                });
+                // catch error
             });
       },
   },

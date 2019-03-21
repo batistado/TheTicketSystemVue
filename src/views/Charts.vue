@@ -50,10 +50,6 @@ export default {
                 this.data = response.data.data;
                 this.loading = false;
             }).catch(e => {
-                this.$message({
-                    message: e,
-                    type: 'error',
-                });
                 this.loading = false;
             });
       },

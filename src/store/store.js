@@ -12,11 +12,13 @@ export const store = new Vuex.Store({
         signIn(state, userName) {
           state.userName = userName;
           state.isAuthenticated = true;
+          window.sessionStorage.setItem('ts_userName', userName);
         },
 
         signOut(state) {
             state.userName = '';
             state.isAuthenticated = false;
+            window.sessionStorage.removeItem('ts_userName');
         }
     },
     getters: {

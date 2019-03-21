@@ -103,10 +103,6 @@ export default {
                 this.total = response.data.totalCount;
                 this.loading = false;
             }).catch(e => {
-                this.$message({
-                    message: e,
-                    type: 'error',
-                });
                 this.loading = false;
             });
       },
