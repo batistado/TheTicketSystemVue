@@ -50,7 +50,6 @@ export default {
       login() {
           http.post('/login', this.requestBody).then(response => {
                 if (response.data.success) {
-                    window.sessionStorage.setItem("tsIsLoggedIn", "Y");
                     this.$store.commit('signIn', this.username);
                     this.$router.push({ name: 'home' });
                 }
